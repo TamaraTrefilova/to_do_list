@@ -41,6 +41,7 @@ $(document).ready(function() {
   var newArray = [];
   var list;
   var doneItems = [];
+  var doneResult = "";
   $("form#to-do").submit(function(event) {
     event.preventDefault();
     // debugger;
@@ -50,36 +51,66 @@ $(document).ready(function() {
     var result = showList(list);
     $(".result").append(result);
     $("form")[0].reset();
+    $("input#done_btn").click(function(event) {
+      event.preventDefault();
+      // debugger;
+      $.each($("input[type='checkbox']:checked"), function() {
+        doneItems.push($(this).val());
+      });
 
-  });
+      for (var i = 0; i < doneItems.length; i++) {
+        doneResult += "<li>" + doneItems[i] + "</li>";
+      }
+      $(".done_result").append(doneResult);
 
-
-  $("form#done_form").click(function(event) {
-    event.preventDefault();
-    debugger;
-    $.each($("input[type='checkbox']:checked"), function() {
-      doneItems.push($(this).val());
-    });
-    var doneResult = "";
-    for (var i = 0; i < doneItems.length; i++) {
-      doneResult += "<li>" + doneItems[i] + "</li>";
-    }
-    $(".done_result").append(doneResult);
-
-    for (var i = 0; i < doneItems.length; i++) {
-      var item = doneItems[i];
-      if (list.array.includes(item)) {
-        var index = list.array.indexOf(item);
-        if (index > -1) {
-          list.array.splice(index, 1);
+      doneResult = "";
+      for (var i = 0; i < doneItems.length; i++) {
+        var item = doneItems[i];
+        if (list.array.includes(item)) {
+          var index = list.array.indexOf(item);
+          if (index > -1) {
+            list.array.splice(index, 1);
+          }
         }
       }
-    }
-    // $("form#to-do")[0].reset();
-    // $(".result").append(showList(list));
-    $("#done").show();
+      debugger;
+      doneItems.length = 0;
 
+      $(".result").remove();
+      $("#done").show();
+      $(".new_result").append(showList(list));
+      $("form")[0].reset();
 
+    });
   });
+
+
+  // $("form#done_form").click(function(event) {
+  //   event.preventDefault();
+  //   debugger;
+  //   $.each($("input[type='checkbox']:checked"), function() {
+  //     doneItems.push($(this).val());
+  //   });
+  //   var doneResult = "";
+  //   for (var i = 0; i < doneItems.length; i++) {
+  //     doneResult += "<li>" + doneItems[i] + "</li>";
+  //   }
+  //   $(".done_result").append(doneResult);
+  //
+  //   for (var i = 0; i < doneItems.length; i++) {
+  //     var item = doneItems[i];
+  //     if (list.array.includes(item)) {
+  //       var index = list.array.indexOf(item);
+  //       if (index > -1) {
+  //         list.array.splice(index, 1);
+  //       }
+  //     }
+  //   }
+  //   // $("form#to-do")[0].reset();
+  //   // $(".result").append(showList(list));
+  //   $("#done").show();
+  //
+  //
+  // });
 
 });
